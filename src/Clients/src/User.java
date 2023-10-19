@@ -7,6 +7,7 @@ public abstract class User extends Contact {
 
     protected String name;
     protected Date birDate;
+    protected String cpf;
     protected Contact contactInfo;
 
     public User(String name, Date birDate, Contact contactInfo){
