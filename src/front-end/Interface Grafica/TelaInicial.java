@@ -10,6 +10,8 @@ public class TelaInicial {
         // Define a cor de fundo da janela como branco
         janela.getContentPane().setBackground(Color.decode("#ffffff"));
 
+        janela.setLocationRelativeTo(null);
+
         // Cria um painel principal
         JPanel painel = new JPanel();
         // Define a cor de fundo do painel principal como branco
@@ -71,20 +73,24 @@ public class TelaInicial {
         // Torna a janela visível
         janela.setVisible(true);
 
+        // Cria objetos para as telas de login e cadastro
         TelaLogin telaLogin = new TelaLogin();
         TelaCadastro telaCadastro = new TelaCadastro();
 
+        // Define a ação do botão "Login"
         botao1.addActionListener(e -> {
             // Tela de login é exibida
             telaLogin.setVisible(true);
-            janela.setVisible(false); // Esconde a tela inicial
+            // Esconde a tela inicial
+            janela.setVisible(false);
         });
         
+        // Define a ação do botão "Cadastro"
         botao2.addActionListener(e -> {
             // Tela de cadastro é exibida
             telaCadastro.setVisible(true);
-            janela.setVisible(false); // Esconde a tela inicial
+            // Esconde a tela inicial
+            janela.setVisible(false);
         });
-        
     }
 }
