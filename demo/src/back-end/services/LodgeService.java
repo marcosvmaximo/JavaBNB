@@ -1,8 +1,11 @@
 package services;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import interfaces.ILodgeService;
+import models.Contact;
+import models.Host;
 import models.Reservation;
 import models.Room;
 
@@ -10,20 +13,23 @@ public class LodgeService implements ILodgeService {
 
   @Override
   public ArrayList<Reservation> GetAllReserveByUser(int idUser) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'GetAllReserveByUser'");
+    // acessa repositorio
+    // busca usuario especifico
+    // retorna
   }
 
   @Override
   public ArrayList<Room> GetAllRooms() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'GetAllRooms'");
+    // acessa repositorio
+    // Busca todos quartos
+    // retorna
   }
 
   @Override
-  public Boolean CreateReserve() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'CreateReserve'");
+  public Boolean CreateReserve(int days) {
+    // Verificar se quarto está disponível por todo esse tempo
+    // Criar o objeto de reserva
+    // Salvar
   }
 
   @Override
@@ -42,15 +48,29 @@ public class LodgeService implements ILodgeService {
   }
 
   @Override
-  public Boolean RegisterUser() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'RegisterUser'");
+  public Boolean RegisterUser(String nomeCompleto, Date dataNascimento, String numeroTelefone, String cpf) {
+    if(nomeCompleto == null || nomeCompleto.isBlank()){
+      return false;
+    }
+
+    if(numeroTelefone == null || numeroTelefone.isBlank()){
+      return false;
+    }
+
+    if(cpf == null || cpf.isBlank()){
+      return false;
+    }
+
+    Contact contact = new Contact(numeroTelefone);
+    Host host = new Host(numeroTelefone, cpf, dataNascimento, contact);
+
+    // salva o host
+    return true;
   }
 
   @Override
-  public Boolean LoginUser() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'LoginUser'");
+  public Host LoginUser(String cpf, Date dataNascimento) {
+    // Busca o host com esse dado,
+    // Retorna ok com os dados desse
   }
-  
 }
