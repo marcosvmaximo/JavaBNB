@@ -8,6 +8,7 @@ public class MinhasReservas extends JFrame {
     private JLabel subTitle;
     private JPanel reservaPanel;
     private JButton quartosButton;
+    private JButton backButton;
 
     public MinhasReservas() {
         initComponents();
@@ -50,6 +51,15 @@ public class MinhasReservas extends JFrame {
             }
         });
 
+        backButton = new JButton("Tela Inicial");
+
+        // Define a ação do botão "Voltar"
+        backButton.addActionListener(e -> {
+            TelaInicial telaInicial = new TelaInicial();
+            telaInicial.setVisible(true); 
+            dispose(); // Fecha a tela de Minhas Reservas
+        });
+
         // Configuração do layout usando GroupLayout
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -69,6 +79,9 @@ public class MinhasReservas extends JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(quartosButton)
                 )
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(backButton)
+                )
         );
 
         layout.setVerticalGroup(
@@ -82,6 +95,9 @@ public class MinhasReservas extends JFrame {
                     .addComponent(reservaPanel)
                     .addGap(20, 20, 20)
                     .addComponent(quartosButton)
+                    .addGap(5, 5, 5)
+                    .addComponent(backButton)
+                    .addGap(20, 20, 20)
                 )
         );
 

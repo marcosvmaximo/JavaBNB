@@ -12,6 +12,7 @@ public class ConfirmarReserva extends JFrame {
     private JLabel precoTotalLabel;
     private JLabel precoTotalValueLabel;
     private JButton confirmarPagamentoButton;
+    private JButton backButton;
 
     public ConfirmarReserva(String roomName, double diariaPrice) {
         initComponents(roomName, diariaPrice);
@@ -36,6 +37,7 @@ public class ConfirmarReserva extends JFrame {
         precoTotalValueLabel = new JLabel();
 
         confirmarPagamentoButton = new JButton("Confirmar Pagamento");
+        backButton = new JButton("Voltar");
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -61,6 +63,7 @@ public class ConfirmarReserva extends JFrame {
                         .addComponent(precoTotalValueLabel)
                     )
                     .addComponent(confirmarPagamentoButton)
+                    .addComponent(backButton)
                 )
         );
 
@@ -82,12 +85,20 @@ public class ConfirmarReserva extends JFrame {
                     .addComponent(precoTotalValueLabel)
                 )
                 .addComponent(confirmarPagamentoButton)
+                .addComponent(backButton)
         );
 
         confirmarPagamentoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 new Pagamento().setVisible(true);
             }
+        });
+
+        // Define a ação do botão "Voltar"
+        backButton.addActionListener(e -> {
+            QuartosDisponiveis telaQuartos = new QuartosDisponiveis();
+            telaQuartos.setVisible(true); 
+            dispose(); 
         });
 
         pack();
