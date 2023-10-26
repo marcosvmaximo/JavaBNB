@@ -10,6 +10,7 @@ public class TelaLogin extends JFrame {
     private JLabel birthDateLabel;
     private JTextField birthDateField;
     private JButton loginButton;
+    private JButton backButton;
 
     public TelaLogin() {
         initComponents();
@@ -47,6 +48,16 @@ public class TelaLogin extends JFrame {
             }
         });
 
+        // Botão para voltar
+        backButton = new JButton("Voltar");
+
+        // Define a ação do botão "Voltar"
+        backButton.addActionListener(e -> {
+            TelaInicial telaInicial = new TelaInicial();
+            telaInicial.setVisible(true); // Exibe a tela inicial
+            dispose(); // Fecha a tela de login
+        });
+
         // Configuração do layout usando GroupLayout
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,6 +75,7 @@ public class TelaLogin extends JFrame {
                         .addComponent(birthDateLabel)
                         .addComponent(birthDateField)
                         .addComponent(loginButton, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
                     )
                     .addGap(20, 20, 20)
                 )
@@ -84,6 +96,8 @@ public class TelaLogin extends JFrame {
                     .addComponent(birthDateField, GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
                     .addGap(50, 50, 50)
                     .addComponent(loginButton, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                    .addGap(10, 10, 10)
+                    .addComponent(backButton, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
                     .addGap(50, 50, 50)
                 )
         );

@@ -15,6 +15,7 @@ public class TelaCadastro extends JFrame {
     private JLabel cpf;
     private JTextField cpfField;
     private JButton signUpButton;
+    private JButton backButton;
 
     // Construtor da classe TelaCadastro
     public TelaCadastro() {
@@ -62,6 +63,15 @@ public class TelaCadastro extends JFrame {
             }
         });
 
+        backButton = new JButton("Voltar");
+
+        // Define a ação do botão "Voltar"
+        backButton.addActionListener(e -> {
+            TelaInicial telaInicial = new TelaInicial();
+            telaInicial.setVisible(true); 
+            dispose(); // Fecha a tela de cadastro
+        });
+
         // Configuração do layout usando GroupLayout
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,6 +90,7 @@ public class TelaCadastro extends JFrame {
                     .addComponent(cpf)
                     .addComponent(cpfField)
                     .addComponent(signUpButton)
+                    .addComponent(backButton)
                 )
                 .addContainerGap(50, Short.MAX_VALUE)  // Espaço à direita
             )
@@ -102,6 +113,8 @@ public class TelaCadastro extends JFrame {
             .addComponent(cpfField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(signUpButton)
+            .addContainerGap(50, Short.MAX_VALUE)  // Espaço abaixo
+            .addComponent(backButton)
             .addContainerGap(50, Short.MAX_VALUE)  // Espaço abaixo
         );
 
