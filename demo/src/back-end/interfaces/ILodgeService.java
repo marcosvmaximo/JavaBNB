@@ -1,7 +1,9 @@
 package interfaces;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
+import models.Host;
 import models.Reservation;
 import models.Room;
 
@@ -14,6 +16,6 @@ public interface ILodgeService {
   Boolean FinishReserve();
   Boolean CancelReserve();
 
-  Boolean RegisterUser();
-  Boolean LoginUser();
+  Boolean RegisterUser(String nomeCompleto, Date dataNascimento, String numeroTelefone, String cpf);
+  Host LoginUser(String cpf, Date dataNascimento);
 }
