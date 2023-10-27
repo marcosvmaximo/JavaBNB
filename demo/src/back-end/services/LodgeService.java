@@ -46,7 +46,7 @@ public class LodgeService implements ILodgeService {
     // reserva.Cancelar()
     // Salvar();
   }
-
+  
   @Override
   public Boolean RegisterUser(String nomeCompleto, Date dataNascimento, String numeroTelefone, String cpf) {
     if(nomeCompleto == null || nomeCompleto.isBlank()){
