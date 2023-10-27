@@ -1,8 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class ConfirmarReserva extends JFrame {
     private JLabel titleLabel;
     private JLabel quantidadeDiariasLabel;
@@ -23,48 +20,51 @@ public class ConfirmarReserva extends JFrame {
         setTitle("Confirmar Reserva");
         setPreferredSize(new Dimension(400, 300));
 
-        titleLabel = new JLabel("Reserva do " + roomName);
-        titleLabel.setFont(new Font("Serif", Font.BOLD, 18));
+        // Título da reserva
+        titleLabel = criarLabel("Reserva do " + roomName, 18, Color.BLACK);
         titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
-        quantidadeDiariasLabel = new JLabel("Quantidade de Diárias");
+        quantidadeDiariasLabel = criarLabel("Quantidade de Diárias", 12, Color.BLACK);
         quantidadeDiariasField = new JTextField(5);
+        quantidadeDiariasField.addActionListener(e -> calcularPrecoTotal());
 
-        precoDiariaLabel = new JLabel("Preço Diária");
-        precoDiariaValueLabel = new JLabel("$" + diariaPrice);
+        precoDiariaLabel = criarLabel("Preço Diária", 12, Color.BLACK);
+        precoDiariaValueLabel = criarLabel("$" + diariaPrice, 12, Color.BLACK);
 
-        precoTotalLabel = new JLabel("Preço Total");
-        precoTotalValueLabel = new JLabel();
+        precoTotalLabel = criarLabel("Preço Total", 12, Color.BLACK);
+        precoTotalValueLabel = criarLabel("", 12, Color.BLACK);
 
-        confirmarPagamentoButton = new JButton("Confirmar Pagamento");
-        backButton = new JButton("Voltar");
+        // Botão "Confirmar Pagamento"
+        confirmarPagamentoButton = criarBotao("Confirmar Pagamento");
+        confirmarPagamentoButton.addActionListener(e -> abrirTelaPagamento());
+
+        // Botão "Voltar"
+        backButton = criarBotao("Voltar");
+        backButton.addActionListener(e -> abrirTelaQuartos());
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
 
-        // Definindo o gap entre os elementos e as bordas
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
 
         layout.setHorizontalGroup(
-            layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(titleLabel)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(quantidadeDiariasLabel)
-                        .addComponent(quantidadeDiariasField)
-                    )
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(precoDiariaLabel)
-                        .addComponent(precoDiariaValueLabel)
-                    )
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(precoTotalLabel)
-                        .addComponent(precoTotalValueLabel)
-                    )
-                    .addComponent(confirmarPagamentoButton)
-                    .addComponent(backButton)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(titleLabel)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(quantidadeDiariasLabel)
+                    .addComponent(quantidadeDiariasField)
                 )
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(precoDiariaLabel)
+                    .addComponent(precoDiariaValueLabel)
+                )
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(precoTotalLabel)
+                    .addComponent(precoTotalValueLabel)
+                )
+                .addComponent(confirmarPagamentoButton)
+                .addComponent(backButton)
         );
 
         layout.linkSize(SwingConstants.HORIZONTAL, quantidadeDiariasLabel, precoDiariaLabel, precoTotalLabel);
@@ -88,26 +88,46 @@ public class ConfirmarReserva extends JFrame {
                 .addComponent(backButton)
         );
 
-        confirmarPagamentoButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                new Pagamento().setVisible(true);
-            }
-        });
-
-        // Define a ação do botão "Voltar"
-        backButton.addActionListener(e -> {
-            QuartosDisponiveis telaQuartos = new QuartosDisponiveis();
-            telaQuartos.setVisible(true); 
-            dispose(); 
-        });
-
         pack();
-        setLocationRelativeTo(null); // Isso centraliza a janela no meio da tela
+        setLocationRelativeTo(null);
+    }
+
+    private void calcularPrecoTotal() {
+        try {
+            int quantidadeDiarias = Integer.parseInt(quantidadeDiariasField.getText());
+            double diariaPrice = Double.parseDouble(precoDiariaValueLabel.getText().replace("$", ""));
+            double precoTotal = quantidadeDiarias * diariaPrice;
+            precoTotalValueLabel.setText("$" + precoTotal);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void abrirTelaPagamento() {
+        new Pagamento().setVisible(true);
+        dispose();
+    }
+
+    private void abrirTelaQuartos() {
+        new QuartosDisponiveis().setVisible(true);
+        dispose();
     }
 
     public static void main(String args[]) {
         SwingUtilities.invokeLater(() -> {
             new ConfirmarReserva("Nome do Quarto 1", 100.00).setVisible(true);
         });
+    }
+
+    private JLabel criarLabel(String texto, int fontSize, Color cor) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Serif", Font.BOLD, fontSize));
+        label.setForeground(cor);
+        return label;
+    }
+
+    private JButton criarBotao(String texto) {
+        JButton botao = new JButton(texto);
+        return botao;
     }
 }

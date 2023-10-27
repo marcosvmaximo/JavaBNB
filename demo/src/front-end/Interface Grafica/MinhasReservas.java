@@ -1,8 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class MinhasReservas extends JFrame {
     private JLabel title;
     private JLabel subTitle;
@@ -15,55 +12,35 @@ public class MinhasReservas extends JFrame {
     }
 
     private void initComponents() {
-        // Configurações da janela
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Minhas Reservas");
         setPreferredSize(new Dimension(800, 600));
-
-        // Define a cor de fundo
         getContentPane().setBackground(Color.decode("#ffffff"));
 
-        // Título da aplicação
-        title = new JLabel("JavaBNB");
-        title.setFont(new Font("Serif", Font.BOLD, 24));
+        title = criarLabel("JavaBNB", 24, Color.decode("#000000"));
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setForeground(Color.decode("#000000"));
 
-        // Subtítulo
-        subTitle = new JLabel("Minhas Reservas");
-        subTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        subTitle = criarLabel("Minhas Reservas", 18, Color.BLACK);
         subTitle.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Painel de reservas
         reservaPanel = new JPanel();
         reservaPanel.setLayout(new GridLayout(0, 1));
 
         // Simulação de reservas - você deve preencher com seus próprios dados
-        createReservaPanel("Nome do Quarto 1", "Data de Entrada 1", "Data de Saída 1", "Número de Hóspedes 1");
-        createReservaPanel("Nome do Quarto 2", "Data de Entrada 2", "Data de Saída 2", "Número de Hóspedes 2");
+        criarReservaPanel("Nome do Quarto 1", "Data de Entrada 1", "Data de Saída 1", "Número de Hóspedes 1");
+        criarReservaPanel("Nome do Quarto 2", "Data de Entrada 2", "Data de Saída 2", "Número de Hóspedes 2");
 
-        // Botão "Quartos"
-        quartosButton = new JButton("Quartos");
+        quartosButton = criarBotao("Quartos");
+        quartosButton.addActionListener(e -> abrirTelaQuartos());
 
-        quartosButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                abrirTelaQuartos();
-                dispose(); 
-            }
-        });
+        backButton = criarBotao("Tela Inicial");
+        backButton.addActionListener(e -> voltarParaTelaInicial());
 
-        backButton = new JButton("Tela Inicial");
-
-        // Define a ação do botão "Voltar"
-        backButton.addActionListener(e -> {
-            TelaInicial telaInicial = new TelaInicial();
-            telaInicial.setVisible(true); 
-            dispose(); // Fecha a tela de Minhas Reservas
-        });
-
-        // Configuração do layout usando GroupLayout
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
+
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.CENTER)
@@ -103,45 +80,55 @@ public class MinhasReservas extends JFrame {
         );
 
         pack();
-        setLocationRelativeTo(null); // Isso centraliza a janela no meio da tela
+        setLocationRelativeTo(null);
     }
 
-    private void createReservaPanel(String roomName, String checkIn, String checkOut, String guests) {
+    private void criarReservaPanel(String roomName, String checkIn, String checkOut, String guests) {
         JPanel reservaItem = new JPanel();
         reservaItem.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         reservaItem.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        JLabel roomLabel = new JLabel("Quarto: " + roomName);
-        JLabel checkInLabel = new JLabel("Check-in: " + checkIn);
-        JLabel checkOutLabel = new JLabel("Check-out: " + checkOut);
-        JLabel guestsLabel = new JLabel("Hóspedes: " + guests);
+        JLabel roomLabel = criarLabel("Quarto: " + roomName, 12, Color.BLACK);
+        JLabel checkInLabel = criarLabel("Check-in: " + checkIn, 12, Color.BLACK);
+        JLabel checkOutLabel = criarLabel("Check-out: " + checkOut, 12, Color.BLACK);
+        JLabel guestsLabel = criarLabel("Hóspedes: " + guests, 12, Color.BLACK);
 
-        JButton deleteButton = new JButton("Excluir");
-
+        JButton deleteButton = criarBotao("Excluir");
         reservaItem.add(roomLabel);
         reservaItem.add(checkInLabel);
         reservaItem.add(checkOutLabel);
         reservaItem.add(guestsLabel);
         reservaItem.add(deleteButton);
-
         reservaPanel.add(reservaItem);
 
-        deleteButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                // Implemente a ação de exclusão aqui
-                reservaPanel.remove(reservaItem);
-                revalidate();
-                repaint();
-            }
-        });
+        deleteButton.addActionListener(e -> excluirReserva(reservaItem));
+    }
+
+    private void excluirReserva(JPanel reservaItem) {
+        reservaPanel.remove(reservaItem);
+        revalidate();
+        repaint();
     }
 
     private void abrirTelaQuartos() {
         new QuartosDisponiveis().setVisible(true);
     }
 
+    private void voltarParaTelaInicial() {
+        TelaInicial telaInicial = new TelaInicial();
+        telaInicial.setVisible(true);
+        dispose();
+    }
+
     public static void main(String args[]) {
-        // Configuração do Look and Feel do Swing
+        configurarLookAndFeel();
+
+        java.awt.EventQueue.invokeLater(() -> {
+            new MinhasReservas().setVisible(true);
+        });
+    }
+
+    private static void configurarLookAndFeel() {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -149,19 +136,20 @@ public class MinhasReservas extends JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MinhasReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MinhasReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MinhasReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MinhasReservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+    }
 
-        // Cria uma instância da classe MinhasReservas e a torna visível
-        java.awt.EventQueue.invokeLater(() -> {
-            new MinhasReservas().setVisible(true);
-        });
+    private JLabel criarLabel(String texto, int fontSize, Color cor) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Serif", Font.BOLD, fontSize));
+        label.setForeground(cor);
+        return label;
+    }
+
+    private JButton criarBotao(String texto) {
+        JButton botao = new JButton(texto);
+        return botao;
     }
 }

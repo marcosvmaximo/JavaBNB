@@ -6,11 +6,12 @@ public class TelaInicial extends JFrame {
     private JButton botaoCadastro;
 
     public TelaInicial() {
+        // Configura a janela principal
         setTitle("Tela Inicial");
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        initComponents();
+        initComponents(); // Inicializa os componentes da tela
     }
 
     private void initComponents() {
@@ -18,31 +19,39 @@ public class TelaInicial extends JFrame {
         contentPane.setBackground(Color.WHITE);
         contentPane.setLayout(new BorderLayout());
 
-        JPanel painelSuperior = new JPanel();
-        painelSuperior.setBackground(Color.WHITE);
-        painelSuperior.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 100));
-
-        JLabel label = new JLabel("JavaBNB");
-        label.setFont(new Font("Serif", Font.BOLD, 24));
-        label.setForeground(Color.BLACK);
-
+        // Cria o painel superior com o título
+        JPanel painelSuperior = criarPainel(Color.WHITE, new FlowLayout(FlowLayout.CENTER, 0, 100));
+        JLabel label = criarLabel("JavaBNB", 24, Color.BLACK);
         painelSuperior.add(label);
 
-        JPanel painelInferior = new JPanel();
-        painelInferior.setBackground(Color.WHITE);
-        painelInferior.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 50));
-
+        // Cria o painel inferior com botões
+        JPanel painelInferior = criarPainel(Color.WHITE, new FlowLayout(FlowLayout.CENTER, 0, 50));
         botaoLogin = criarBotao("Login");
         botaoCadastro = criarBotao("Cadastro");
-
         painelInferior.add(botaoLogin);
         painelInferior.add(botaoCadastro);
 
+        // Adiciona os painéis ao conteúdo
         contentPane.add(painelSuperior, BorderLayout.NORTH);
         contentPane.add(painelInferior, BorderLayout.CENTER);
 
+        // Configura ação dos botões
         botaoLogin.addActionListener(e -> mostrarTelaLogin());
         botaoCadastro.addActionListener(e -> mostrarTelaCadastro());
+    }
+
+    private JPanel criarPainel(Color background, LayoutManager layout) {
+        JPanel painel = new JPanel();
+        painel.setBackground(background);
+        painel.setLayout(layout);
+        return painel;
+    }
+
+    private JLabel criarLabel(String texto, int fontSize, Color cor) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Serif", Font.BOLD, fontSize));
+        label.setForeground(cor);
+        return label;
     }
 
     private JButton criarBotao(String texto) {

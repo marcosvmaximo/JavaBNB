@@ -13,22 +13,31 @@ public class Pagamento extends JFrame {
         setTitle("Pagamento");
         setPreferredSize(new Dimension(400, 300));
 
-        pagamentoLabel = new JLabel("Pagamento confirmado!");
-        pagamentoLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        // Rótulo de pagamento confirmado
+        pagamentoLabel = criarLabel("Pagamento confirmado!", 24, Color.BLACK);
         pagamentoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+        // Painel para centralizar o rótulo
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(pagamentoLabel, BorderLayout.CENTER);
 
         add(panel);
 
         pack();
-        setLocationRelativeTo(null); // Isso centraliza a janela no meio da tela
+        setLocationRelativeTo(null);
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new Pagamento().setVisible(true);
         });
+    }
+
+    // Método para criar um rótulo com o texto, tamanho da fonte e cor especificados
+    private JLabel criarLabel(String texto, int fontSize, Color cor) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Serif", Font.BOLD, fontSize));
+        label.setForeground(cor);
+        return label;
     }
 }

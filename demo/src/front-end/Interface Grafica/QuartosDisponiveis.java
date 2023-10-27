@@ -1,8 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class QuartosDisponiveis extends JFrame {
     private JLabel title;
     private JPanel quartosPanel;
@@ -16,49 +13,44 @@ public class QuartosDisponiveis extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quartos Disponíveis");
         setPreferredSize(new Dimension(800, 600));
-
         getContentPane().setBackground(Color.decode("#ffffff"));
 
-        title = new JLabel("JavaBNB");
-        title.setFont(new Font("Serif", Font.BOLD, 24));
+        // Título da aplicação
+        title = criarLabel("JavaBNB", 24, Color.BLACK);
         title.setHorizontalAlignment(SwingConstants.CENTER);
 
         quartosPanel = new JPanel();
         quartosPanel.setLayout(new BoxLayout(quartosPanel, BoxLayout.Y_AXIS));
 
-        createQuartoPanel("Quarto 1", "Disponível", "R$100");
-        createQuartoPanel("Quarto 2", "Ocupado", "R$150");
-        createQuartoPanel("Quarto 3", "Disponível", "R$80");
+        // Simulação de quartos - você pode adicionar mais quartos
+        criarQuartoPanel("Quarto 1", "Disponível", "R$100");
+        criarQuartoPanel("Quarto 2", "Ocupado", "R$150");
+        criarQuartoPanel("Quarto 3", "Disponível", "R$80");
 
-        reservasButton = new JButton("Reservas");
-        reservasButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                abrirTelaReservas();
-                dispose(); 
-            }
-        });
+        reservasButton = criarBotao("Reservas");
+        reservasButton.addActionListener(e -> abrirTelaReservas());
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
 
-        layout.setAutoCreateGaps(true); // Ativar o espaço automático
-        layout.setAutoCreateContainerGaps(true); // Ativar o espaço entre contêineres
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                 .addComponent(title)
-                .addGap(30) // Adicionar um espaço de 30 pixels
+                .addGap(30)
                 .addComponent(quartosPanel)
-                .addGap(30) // Adicionar um espaço de 30 pixels
+                .addGap(30)
                 .addComponent(reservasButton)
         );
 
         layout.setVerticalGroup(
             layout.createSequentialGroup()
                 .addComponent(title)
-                .addGap(30) // Adicionar um espaço de 30 pixels
+                .addGap(30)
                 .addComponent(quartosPanel)
-                .addGap(30) // Adicionar um espaço de 30 pixels
+                .addGap(30)
                 .addComponent(reservasButton)
         );
 
@@ -66,15 +58,15 @@ public class QuartosDisponiveis extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void createQuartoPanel(String roomName, String availability, String price) {
+    private void criarQuartoPanel(String roomName, String availability, String price) {
         JPanel quartoItem = new JPanel();
         quartoItem.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-        JLabel roomLabel = new JLabel("Quarto: " + roomName);
-        JLabel availabilityLabel = new JLabel("Disponibilidade: " + availability);
-        JLabel priceLabel = new JLabel("Preço: " + price);
+        JLabel roomLabel = criarLabel("Quarto: " + roomName, 12, Color.BLACK);
+        JLabel availabilityLabel = criarLabel("Disponibilidade: " + availability, 12, Color.BLACK);
+        JLabel priceLabel = criarLabel("Preço: " + price, 12, Color.BLACK);
 
-        JButton reservaButton = new JButton("Reservar");
+        JButton reservaButton = criarBotao("Reservar");
         reservaButton.setPreferredSize(new Dimension(100, 30));
 
         quartoItem.add(roomLabel);
@@ -84,20 +76,29 @@ public class QuartosDisponiveis extends JFrame {
 
         quartosPanel.add(quartoItem);
 
-        reservaButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                ConfirmarReserva confirmarReserva = new ConfirmarReserva(roomName, Double.parseDouble(price.replace("R$", "").trim()));
-                confirmarReserva.setVisible(true);
-                dispose(); 
-            }
-        });
+        reservaButton.addActionListener(e -> abrirTelaConfirmarReserva(roomName, Double.parseDouble(price.replace("R$", "").trim())));
     }
 
     private void abrirTelaReservas() {
         new MinhasReservas().setVisible(true);
+        dispose();
+    }
+
+    private void abrirTelaConfirmarReserva(String roomName, double price) {
+        ConfirmarReserva confirmarReserva = new ConfirmarReserva(roomName, price);
+        confirmarReserva.setVisible(true);
+        dispose();
     }
 
     public static void main(String args[]) {
+        configurarLookAndFeel();
+
+        java.awt.EventQueue.invokeLater(() -> {
+            new QuartosDisponiveis().setVisible(true);
+        });
+    }
+
+    private static void configurarLookAndFeel() {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -108,9 +109,17 @@ public class QuartosDisponiveis extends JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
 
-        java.awt.EventQueue.invokeLater(() -> {
-            new QuartosDisponiveis().setVisible(true);
-        });
+    private JLabel criarLabel(String texto, int fontSize, Color cor) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Serif", Font.BOLD, fontSize));
+        label.setForeground(cor);
+        return label;
+    }
+
+    private JButton criarBotao(String texto) {
+        JButton botao = new JButton(texto);
+        return botao;
     }
 }
