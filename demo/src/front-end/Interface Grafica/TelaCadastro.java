@@ -99,8 +99,45 @@ public class TelaCadastro extends JFrame {
     }
 
     private void signUpButtonActionPerformed(ActionEvent evt) {
-        // Implementação da lógica de cadastro (a ser implementada)
-    }
+
+        // Obter os dados do front-end
+        String nomeCompleto = nameField.getText();
+        String dataNascimentoStr = birthDateField.getText();
+        String numeroTelefone = phoneField.getText();
+        String cpf = cpfField.getText();
+    
+        // Verifique se os campos obrigatórios estão preenchidos
+        if (nomeCompleto.isEmpty() || numeroTelefone.isEmpty() || cpf.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos os campos são obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
+
+        } else {
+
+            Date dataNascimento = null;
+            try {
+                // Tenta converter a data de nascimento em um objeto Date
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                dataNascimento = dateFormat.parse(dataNascimentoStr);
+            } catch (ParseException e) {
+                JOptionPane.showMessageDialog(this, "Data de nascimento inválida. Use o formato dd/MM/yyyy.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+    
+            if (dataNascimento != null) {
+                // Chame a função RegisterUser
+                Boolean cadastrado = RegisterUser(nomeCompleto, dataNascimento, numeroTelefone, cpf);
+    
+                if (cadastrado) {
+                    JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    // Limpe os campos após o cadastro
+                    nameField.setText("");
+                    birthDateField.setText("");
+                    phoneField.setText("");
+                    cpfField.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Erro no cadastro. Verifique os dados e tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }    
 
     private void voltarParaTelaInicial() {
         TelaInicial telaInicial = new TelaInicial();
