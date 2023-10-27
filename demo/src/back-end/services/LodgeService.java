@@ -64,6 +64,8 @@ public class LodgeService implements ILodgeService {
     Contact contact = new Contact(numeroTelefone);
     Host host = new Host(numeroTelefone, cpf, dataNascimento, contact);
 
+    HostRepository repository = new HostRepository();
+    repository.adicionarPessoa(host);
     // salva o host
     return true;
   }
