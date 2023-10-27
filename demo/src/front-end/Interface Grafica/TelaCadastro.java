@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class TelaCadastro extends JFrame {
-    // Componentes da tela de cadastro
     private JLabel title;
     private JLabel name;
     private JTextField nameField;
@@ -17,68 +15,46 @@ public class TelaCadastro extends JFrame {
     private JButton signUpButton;
     private JButton backButton;
 
-    // Construtor da classe TelaCadastro
     public TelaCadastro() {
         initComponents();
     }
 
-    // Inicialização dos componentes da tela
     private void initComponents() {
-        // Configurações da janela
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tela de Cadastro");
         setPreferredSize(new Dimension(500, 500));
-
-        // Define a cor de fundo
         getContentPane().setBackground(Color.decode("#ffffff"));
 
-        // Título da aplicação
-        title = new JLabel("JavaBNB");
-        title.setFont(new Font("Serif", Font.BOLD, 24));
+        title = criarLabel("JavaBNB", 24, Color.decode("#000000"));
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setForeground(Color.decode("#000000")); // Cor do texto
 
-        // Campos e rótulos para o formulário de cadastro
-        name = new JLabel("DIGITE O SEU NOME COMPLETO:");
-        name.setFont(new Font("Arial", Font.BOLD, 12));
-        nameField = new JTextField();
+        name = criarLabel("DIGITE O SEU NOME COMPLETO:", 12, Color.BLACK);
+        nameField = criarTextField();
 
-        birthDate = new JLabel("DIGITE SUA DATA DE NASCIMENTO:");
-        birthDate.setFont(new Font("Arial", Font.BOLD, 12));
-        birthDateField = new JTextField();
+        birthDate = criarLabel("DIGITE SUA DATA DE NASCIMENTO:", 12, Color.BLACK);
+        birthDateField = criarTextField();
 
-        phone = new JLabel("DIGITE O SEU TELEFONE:");
-        phone.setFont(new Font("Arial", Font.BOLD, 12));
-        phoneField = new JTextField();
+        phone = criarLabel("DIGITE O SEU TELEFONE:", 12, Color.BLACK);
+        phoneField = criarTextField();
 
-        cpf = new JLabel("DIGITE O SEU CPF:");
-        cpf.setFont(new Font("Arial", Font.BOLD, 12));
-        cpfField = new JTextField();
+        cpf = criarLabel("DIGITE O SEU CPF:", 12, Color.BLACK);
+        cpfField = criarTextField();
 
-        signUpButton = new JButton("CADASTRAR");
+        signUpButton = criarBotao("CADASTRAR");
+        signUpButton.addActionListener(e -> signUpButtonActionPerformed(e));
 
-        signUpButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                signUpButtonActionPerformed(evt);
-            }
-        });
+        backButton = criarBotao("Voltar");
+        backButton.addActionListener(e -> voltarParaTelaInicial());
 
-        backButton = new JButton("Voltar");
-
-        // Define a ação do botão "Voltar"
-        backButton.addActionListener(e -> {
-            TelaInicial telaInicial = new TelaInicial();
-            telaInicial.setVisible(true); 
-            dispose(); // Fecha a tela de cadastro
-        });
-
-        // Configuração do layout usando GroupLayout
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
 
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)  // Espaço à esquerda
+                .addContainerGap(50, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                     .addComponent(title)
                     .addComponent(name)
@@ -92,12 +68,12 @@ public class TelaCadastro extends JFrame {
                     .addComponent(signUpButton)
                     .addComponent(backButton)
                 )
-                .addContainerGap(50, Short.MAX_VALUE)  // Espaço à direita
+                .addContainerGap(50, Short.MAX_VALUE)
             )
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
-            .addContainerGap(50, Short.MAX_VALUE)  // Espaço acima
+            .addContainerGap(50, Short.MAX_VALUE)
             .addComponent(title)
             .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(name)
@@ -113,23 +89,34 @@ public class TelaCadastro extends JFrame {
             .addComponent(cpfField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(signUpButton)
-            .addContainerGap(50, Short.MAX_VALUE)  // Espaço abaixo
+            .addContainerGap(50, Short.MAX_VALUE)
             .addComponent(backButton)
-            .addContainerGap(50, Short.MAX_VALUE)  // Espaço abaixo
+            .addContainerGap(50, Short.MAX_VALUE)
         );
 
         pack();
-        setLocationRelativeTo(null); // Isso centraliza a janela no meio da tela
+        setLocationRelativeTo(null);
     }
 
-    // Método a ser implementado para tratar o evento do botão "CADASTRAR"
     private void signUpButtonActionPerformed(ActionEvent evt) {
-        // Método de tratamento do evento do botão (a ser implementado)
+        // Implementação da lógica de cadastro (a ser implementada)
     }
 
-    // Método principal
+    private void voltarParaTelaInicial() {
+        TelaInicial telaInicial = new TelaInicial();
+        telaInicial.setVisible(true);
+        dispose();
+    }
+
     public static void main(String args[]) {
-        // Configuração do Look and Feel do Swing
+        configurarLookAndFeel();
+
+        java.awt.EventQueue.invokeLater(() -> {
+            new TelaCadastro().setVisible(true);
+        });
+    }
+
+    private static void configurarLookAndFeel() {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -137,19 +124,26 @@ public class TelaCadastro extends JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+    }
 
-        // Cria uma instância da classe TelaCadastro e a torna visível
-        java.awt.EventQueue.invokeLater(() -> {
-            new TelaCadastro().setVisible(true);
-        });
+    private JLabel criarLabel(String texto, int fontSize, Color cor) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Serif", Font.BOLD, fontSize));
+        label.setForeground(cor);
+        return label;
+    }
+
+    private JTextField criarTextField() {
+        JTextField textField = new JTextField();
+        return textField;
+    }
+
+    private JButton criarBotao(String texto) {
+        JButton botao = new JButton(texto);
+        botao.setPreferredSize(new Dimension(200, 50));
+        return botao;
     }
 }
