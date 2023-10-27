@@ -34,6 +34,7 @@ public class QuartosDisponiveis extends JFrame {
         reservasButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 abrirTelaReservas();
+                dispose(); 
             }
         });
 
@@ -87,6 +88,7 @@ public class QuartosDisponiveis extends JFrame {
             public void actionPerformed(ActionEvent evt) {
                 ConfirmarReserva confirmarReserva = new ConfirmarReserva(roomName, Double.parseDouble(price.replace("R$", "").trim()));
                 confirmarReserva.setVisible(true);
+                dispose(); 
             }
         });
     }

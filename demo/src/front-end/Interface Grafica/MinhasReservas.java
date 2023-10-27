@@ -48,6 +48,7 @@ public class MinhasReservas extends JFrame {
         quartosButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 abrirTelaQuartos();
+                dispose(); 
             }
         });
 
