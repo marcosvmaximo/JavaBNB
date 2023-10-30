@@ -1,0 +1,7 @@
+{
+    "java.project.sourcePaths": [
+        "src/front-end/Interface Grafica",
+        "demo/src/front-end/Interface Grafica"
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
