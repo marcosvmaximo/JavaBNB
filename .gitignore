@@ -1,0 +1,29 @@
+# Arquivos gerados pelo Maven
+target/
+
+# Arquivos específicos do VSCode
+.vscode/
+
+# Arquivos de configuração do sistema (pode variar dependendo do sistema)
+.DS_Store
+
+# Logs e arquivos de saída
+*.log
+log/
+
+# Arquivos temporários
+*.tmp
+
+# Arquivos de compilação
+*.class
+
+# Arquivos de configuração do projeto local
+.idea/
+
+# Arquivos de configuração do Maven
+maven-wrapper/
+
+# Arquivos de dependência Maven (pode variar dependendo do seu sistema)
+.m2/
+
+# Outros arquivos e diretórios que você deseja ignorar
