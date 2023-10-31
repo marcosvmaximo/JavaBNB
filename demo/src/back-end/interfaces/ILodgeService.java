@@ -13,9 +13,12 @@ public interface ILodgeService {
 
   // pegar dados necessários do front-end
   Boolean CreateReserve();
+
+  Boolean CreateReserve(int days);
+
   Boolean FinishReserve();
   Boolean CancelReserve();
 
-  Boolean RegisterUser(String nomeCompleto, Date dataNascimento, String numeroTelefone, String cpf);
+  Boolean RegisterUser(String nomeCompleto, String dataNascimento, String numeroTelefone, String cpf);
   Host LoginUser(String cpf, Date dataNascimento);
 }

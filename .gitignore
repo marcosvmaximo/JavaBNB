@@ -27,3 +27,5 @@ maven-wrapper/
 .m2/
 
 # Outros arquivos e diretórios que você deseja ignorar
+
+.fake

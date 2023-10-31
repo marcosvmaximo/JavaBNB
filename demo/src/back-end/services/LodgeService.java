@@ -1,13 +1,13 @@
 package services;
 
-import java.sql.Date;
-import java.util.ArrayList;
-
 import interfaces.ILodgeService;
 import models.Contact;
 import models.Host;
 import models.Reservation;
 import models.Room;
+
+import java.sql.Date;
+import java.util.ArrayList;
 
 public class LodgeService implements ILodgeService {
 
@@ -15,6 +15,7 @@ public class LodgeService implements ILodgeService {
   public ArrayList<Reservation> GetAllReserveByUser(int idUser) {
     // acessa repositorio
     // busca usuario especifico
+    return new ArrayList<>();
     // retorna
   }
 
@@ -23,6 +24,12 @@ public class LodgeService implements ILodgeService {
     // acessa repositorio
     // Busca todos quartos
     // retorna
+    return new ArrayList<>();
+  }
+
+  @Override
+  public Boolean CreateReserve() {
+    return null;
   }
 
   @Override
@@ -30,6 +37,7 @@ public class LodgeService implements ILodgeService {
     // Verificar se quarto está disponível por todo esse tempo
     // Criar o objeto de reserva
     // Salvar
+    return true;
   }
 
   @Override
@@ -48,7 +56,7 @@ public class LodgeService implements ILodgeService {
   }
   
   @Override
-  public Boolean RegisterUser(String nomeCompleto, Date dataNascimento, String numeroTelefone, String cpf) {
+  public Boolean RegisterUser(String nomeCompleto, String dataNascimento, String numeroTelefone, String cpf) {
     if(nomeCompleto == null || nomeCompleto.isBlank()){
       return false;
     }
@@ -62,10 +70,10 @@ public class LodgeService implements ILodgeService {
     }
 
     Contact contact = new Contact(numeroTelefone);
-    Host host = new Host(numeroTelefone, cpf, dataNascimento, contact);
+    Host host = new Host(numeroTelefone, cpf, new Date(1), contact);
 
-    HostRepository repository = new HostRepository();
-    repository.adicionarPessoa(host);
+//    HostRepository repository = new HostRepository();
+//    repository.adicionarPessoa(host);
     // salva o host
     return true;
   }
@@ -74,5 +82,6 @@ public class LodgeService implements ILodgeService {
   public Host LoginUser(String cpf, Date dataNascimento) {
     // Busca o host com esse dado,
     // Retorna ok com os dados desse
+    return new Host(null, null, null, null);
   }
 }

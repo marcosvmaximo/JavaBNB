@@ -1,6 +1,11 @@
+import services.LodgeService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TelaCadastro extends JFrame {
     private JLabel title;
@@ -123,7 +128,9 @@ public class TelaCadastro extends JFrame {
     
             if (dataNascimento != null) {
                 // Chame a função RegisterUser
-                Boolean cadastrado = RegisterUser(nomeCompleto, dataNascimento, numeroTelefone, cpf);
+                LodgeService service = new LodgeService();
+                
+                Boolean cadastrado = service.RegisterUser(nomeCompleto, dataNascimentoStr, numeroTelefone, cpf);
     
                 if (cadastrado) {
                     JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
