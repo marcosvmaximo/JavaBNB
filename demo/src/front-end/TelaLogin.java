@@ -1,6 +1,11 @@
+import services.LodgeService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TelaLogin extends JFrame {
     private JLabel title;
@@ -81,16 +86,45 @@ public class TelaLogin extends JFrame {
     }
 
     private void loginButtonActionPerformed(ActionEvent evt) {
-        // Implementação da lógica de login
+
         String cpf = cpfField.getText();
         String birthDate = birthDateField.getText();
 
-        // Verifica as credenciais e acessa o sistema
-        if (cpf.equals("seuCpf") && birthDate.equals("suaDataDeNascimento")) {
+        if (cpf.isEmpty() || birthDate.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos os campos são obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+        Date dataNascimento = null;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            dataNascimento = dateFormat.parse(birthDate);
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, "Data de nascimento inválida. Use o formato dd/MM/yyyy.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Utiliza serviço
+        LodgeService service = new LodgeService();
+        boolean result = service.LoginUser(cpf, birthDate);
+
+        if (result) {
             JOptionPane.showMessageDialog(this, "Login bem-sucedido!");
+            proximaTela(cpf);
         } else {
             JOptionPane.showMessageDialog(this, "Login falhou. Verifique suas credenciais.");
         }
+
+        limparCampos();
+    }
+
+    private void proximaTela(String cpf){
+        MinhasReservas telaReserva = new MinhasReservas(cpf);
+        telaReserva.setVisible(true);
+        dispose();
+    }
+
+    private void limparCampos(){
+        birthDateField.setText("");
+        cpfField.setText("");
     }
 
     private void voltarParaTelaInicial() {

@@ -2,7 +2,7 @@ package models;
 
 import models.common.Entity;
 
-public class Contact extends Entity {
+public class    Contact extends Entity {
     private String phoneNumber;
 
     public Contact(String phoneNumber) {
@@ -19,7 +19,7 @@ public class Contact extends Entity {
 
     @Override
     public String toString() {
-        return "Número de Telefone: " + phoneNumber;
+        return phoneNumber;
     }
 
     @Override

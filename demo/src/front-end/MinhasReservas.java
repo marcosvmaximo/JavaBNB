@@ -1,6 +1,12 @@
+import models.Reservation;
+import services.LodgeService;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+
 public class MinhasReservas extends JFrame {
+    private String user;
     private JLabel title;
     private JLabel subTitle;
     private JPanel reservaPanel;
@@ -8,6 +14,10 @@ public class MinhasReservas extends JFrame {
     private JButton backButton;
 
     public MinhasReservas() {
+        initComponents();
+    }
+    public MinhasReservas(String cpf) {
+        this.user = cpf;
         initComponents();
     }
 
@@ -27,8 +37,20 @@ public class MinhasReservas extends JFrame {
         reservaPanel.setLayout(new GridLayout(0, 1));
 
         // Simulação de reservas - você deve preencher com seus próprios dados
-        criarReservaPanel("Nome do Quarto 1", "Data de Entrada 1", "Data de Saída 1", "Número de Hóspedes 1");
-        criarReservaPanel("Nome do Quarto 2", "Data de Entrada 2", "Data de Saída 2", "Número de Hóspedes 2");
+
+        // Obter as reservas atuais
+        LodgeService service = new LodgeService();
+        ArrayList<Reservation> reservations = service.GetAllReserveByUser(this.user);
+
+        for (Reservation r:reservations) {
+            String nomeQuarto = String.format("Nome do Quarto: %s", r.getRoom().getName());
+            String checkIn = String.format("Data de Entrada : %s", r.getCheckIn());
+            String checkOut = String.format("Data de Saída: %s", r.getCheckOut());
+            String guestNumber = String.format("Nome do Quarto: %s", r.getGuestNumbersToReserve());
+            criarReservaPanel(nomeQuarto, checkIn, checkOut, guestNumber);
+        }
+//        criarReservaPanel("Nome do Quarto 1", "Data de Entrada 1", "Data de Saída 1", "Número de Hóspedes 1");
+//        criarReservaPanel("Nome do Quarto 2", "Data de Entrada 2", "Data de Saída 2", "Número de Hóspedes 2");
 
         quartosButton = criarBotao("Quartos");
         quartosButton.addActionListener(e -> abrirTelaQuartos());

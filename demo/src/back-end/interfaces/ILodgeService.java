@@ -1,14 +1,12 @@
 package interfaces;
 
-import java.sql.Date;
-import java.util.ArrayList;
-
-import models.Host;
 import models.Reservation;
 import models.Room;
 
+import java.util.ArrayList;
+
 public interface ILodgeService {
-  ArrayList<Reservation> GetAllReserveByUser(int idUser);  
+  ArrayList<Reservation> GetAllReserveByUser(String cpfUser);
   ArrayList<Room> GetAllRooms();
 
   // pegar dados necessários do front-end
@@ -19,6 +17,7 @@ public interface ILodgeService {
   Boolean FinishReserve();
   Boolean CancelReserve();
 
-  Boolean RegisterUser(String nomeCompleto, String dataNascimento, String numeroTelefone, String cpf);
-  Host LoginUser(String cpf, Date dataNascimento);
+  boolean RegisterUser(String nomeCompleto, String dataNascimento, String numeroTelefone, String cpf);
+  boolean LoginUser(String cpf, String dataNascimento);
+
 }

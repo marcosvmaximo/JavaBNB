@@ -2,6 +2,7 @@ package models.common;
 
 import models.Contact;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public abstract class User extends Entity {
@@ -35,8 +36,8 @@ public abstract class User extends Entity {
         return this.contact.toString();
     }
 
-    public LocalDateTime getBirthDate() {
-        return this.birth;
+    public LocalDate getBirthDate() {
+        return this.birth.toLocalDate();
     }
     
     public static boolean isValidCPF(String cpf) {
