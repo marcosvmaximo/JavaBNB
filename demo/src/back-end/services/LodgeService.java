@@ -5,8 +5,10 @@ import models.Contact;
 import models.Host;
 import models.Reservation;
 import models.Room;
+import repositories.HostRepository;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class LodgeService implements ILodgeService {
@@ -69,11 +71,19 @@ public class LodgeService implements ILodgeService {
       return false;
     }
 
-    Contact contact = new Contact(numeroTelefone);
-    Host host = new Host(numeroTelefone, cpf, new Date(1), contact);
+    String[] partesData = dataNascimento.split("/");
 
-//    HostRepository repository = new HostRepository();
-//    repository.adicionarPessoa(host);
+    int dia = Integer.parseInt(partesData[0]);
+    int mes = Integer.parseInt(partesData[1]);
+    int ano = Integer.parseInt(partesData[2]);
+
+    LocalDateTime dateTime = LocalDateTime.of(ano, mes, dia, 0, 0);
+
+    Contact contact = new Contact(numeroTelefone);
+    Host host = new Host(nomeCompleto, cpf, dateTime, contact);
+
+    HostRepository repository = new HostRepository();
+    repository.adicionarPessoa(host);
     // salva o host
     return true;
   }

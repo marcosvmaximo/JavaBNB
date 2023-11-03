@@ -1,19 +1,12 @@
 package models;
-import java.util.regex.Pattern;
 
 import models.common.Entity;
-
-import java.util.regex.Matcher;
 
 public class Contact extends Entity {
     private String phoneNumber;
 
     public Contact(String phoneNumber) {
-        if (isValidPhoneNumber(phoneNumber)) {
-            this.phoneNumber = phoneNumber;
-        } else {
-            throw new IllegalArgumentException("Número de telefone celular inválido.");
-        }
+        this.phoneNumber = phoneNumber;
     }
 
     public String getPhoneNumber() {
@@ -21,18 +14,7 @@ public class Contact extends Entity {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        if (isValidPhoneNumber(phoneNumber)) {
-            this.phoneNumber = phoneNumber;
-        } else {
-            throw new IllegalArgumentException("Número de telefone celular inválido.");
-        }
-    }
-
-    private boolean isValidPhoneNumber(String phoneNumber) {
-        String phonePattern = "\\d{10}";
-        Pattern pattern = Pattern.compile(phonePattern);
-        Matcher matcher = pattern.matcher(phoneNumber);
-        return matcher.matches();
+        this.phoneNumber = phoneNumber;
     }
 
     @Override

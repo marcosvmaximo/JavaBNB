@@ -1,14 +1,16 @@
 package models.common;
-import java.util.Date;
+
 import models.Contact;
+
+import java.time.LocalDateTime;
 
 public abstract class User extends Entity {
     private String name;
-    private Date birth;
+    private LocalDateTime birth;
     private String cpf;
     private Contact contact;
 
-    public User(String name, String cpf, Date birth, Contact contact){
+    public User(String name, String cpf, LocalDateTime birth, Contact contact){
         if(!User.isValidCPF(cpf)){
             throw new IllegalArgumentException("Cpf inválido.");
         }
@@ -33,7 +35,7 @@ public abstract class User extends Entity {
         return this.contact.toString();
     }
 
-    public Date getBirthDate() {
+    public LocalDateTime getBirthDate() {
         return this.birth;
     }
     

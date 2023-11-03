@@ -1,17 +1,15 @@
 package models;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
 
 import models.common.User;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Host extends User {
     private ArrayList<Reservation> reservation;
     private int maxReservationNumber = 2;
     
-    public Host(String name, String cpf, Date birth, Contact contact) {
+    public Host(String name, String cpf, LocalDateTime birth, Contact contact) {
         super(name, cpf, birth, contact);
         
         reservation = new ArrayList<Reservation>();
@@ -31,12 +29,11 @@ public class Host extends User {
 
     @Override
     public int getAge() {
-        LocalDate today = LocalDate.now();
-        LocalDate birthLocalDate = getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        Period period = Period.between(birthLocalDate, today);
-
-        return period.getYears();
+//        LocalDateTime now = LocalDateTime.now();
+//        LocalDateTime birthDateTime = LocalDateTime.ofInstant(getBirthDate().toInstant(), ZoneId.systemDefault());
+//
+//        return Period.between(birthDateTime.toLocalDate(), now.toLocalDate()).getYears();
+        return 1;
     }
 
     @Override
