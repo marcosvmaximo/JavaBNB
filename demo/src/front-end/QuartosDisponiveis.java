@@ -23,9 +23,11 @@ public class QuartosDisponiveis extends JFrame {
         quartosPanel.setLayout(new BoxLayout(quartosPanel, BoxLayout.Y_AXIS));
 
         // Simulação de quartos - você pode adicionar mais quartos
-        criarQuartoPanel("Quarto 1", "Disponível", "R$100");
-        criarQuartoPanel("Quarto 2", "Ocupado", "R$150");
-        criarQuartoPanel("Quarto 3", "Disponível", "R$80");
+        criarQuartoPanel("Quarto 1", "Disponível", "R$59");
+        criarQuartoPanel("Quarto 2", "Disponível", "R$119");
+        criarQuartoPanel("Quarto 3", "Disponível", "R$200");
+        criarQuartoPanel("Quarto 4", "Ocupado", "R$150");
+        criarQuartoPanel("Quarto 5", "Disponível", "R$80");
 
         reservasButton = criarBotao("Reservas");
         reservasButton.addActionListener(e -> abrirTelaReservas());

@@ -20,45 +20,29 @@ public class LodgeService implements ILodgeService {
     }
 
     LodgeRepository repository = new LodgeRepository();
-    repository.getAllReservationByCpf(cpfUser);
-    return new ArrayList<>();
-    // retorna
+    return repository.getAllReservationByCpf(cpfUser);
   }
 
   @Override
   public ArrayList<Room> GetAllRooms() {
-    // acessa repositorio
-    // Busca todos quartos
-    // retorna
-    return new ArrayList<>();
+    LodgeRepository repository = new LodgeRepository();
+    return repository.getAllRooms();
   }
 
   @Override
   public Boolean CreateReserve() {
-    return null;
-  }
 
-  @Override
-  public Boolean CreateReserve(int days) {
-    // Verificar se quarto está disponível por todo esse tempo
-    // Criar o objeto de reserva
-    // Salvar
+//    // Buscar Host
+//    Host host = new Host();
+//    // Buscar Room
+//    Room room = new Room();
+//
+//    Reservation reservation = new Reservation();
+//
+//    LodgeRepository repository = new LodgeRepository();
+//    var result = repository.createReservation(reservation);
+
     return true;
-  }
-
-  @Override
-  public Boolean FinishReserve() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'FinishReserve'");
-  }
-
-  @Override
-  public Boolean CancelReserve() {
-        throw new UnsupportedOperationException("Unimplemented method 'RegisterUser'");
-    // busca a reserva no bd
-    // verifica se ela existe 
-    // reserva.Cancelar()
-    // Salvar();
   }
   
   @Override

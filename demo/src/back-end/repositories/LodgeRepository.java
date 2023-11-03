@@ -1,6 +1,7 @@
 package repositories;
 
 
+import enums.ERoomType;
 import models.Host;
 import models.Reservation;
 import models.Room;
@@ -102,6 +103,36 @@ public class LodgeRepository {
       }
 
       return reservations;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return new ArrayList<>(); // Tratamento de erro
+    }
+  }
+
+  public ArrayList<Room> getAllRooms() {
+    try {
+      String sql = "SELECT * FROM Room";
+
+      PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+      ResultSet resultSet = preparedStatement.executeQuery();
+
+      ArrayList<Room> rooms = new ArrayList<>();
+      while (resultSet.next()) {
+        String nome = resultSet.getString("nome");
+        int capacidade = resultSet.getInt("capacidade");
+        int tipo = resultSet.getInt("tipo");
+        float precoDiaria = resultSet.getFloat("preco_diaria");
+        String descricao = resultSet.getString("descricao");
+        boolean estaReservado = resultSet.getBoolean("esta_reservado");
+
+        Room room = new Room(nome, ERoomType.Familia,capacidade, precoDiaria, descricao);
+
+
+        rooms.add(room);
+      }
+
+      return rooms;
     } catch (SQLException e) {
       e.printStackTrace();
       return new ArrayList<>(); // Tratamento de erro
