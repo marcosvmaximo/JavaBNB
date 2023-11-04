@@ -2,6 +2,7 @@ package repositories;
 
 
 import enums.ERoomType;
+import models.Contact;
 import models.Host;
 import models.Reservation;
 import models.Room;
@@ -48,7 +49,34 @@ public class LodgeRepository {
   }
 
   public boolean createReservation(Reservation reservation){
-    return true;
+    try {
+      String updateRoomQuery = "UPDATE Room SET esta_reservado = ? WHERE id = ?";
+      PreparedStatement roomUpdateStatement = connection.prepareStatement(updateRoomQuery);
+      roomUpdateStatement.setBoolean(1, false);
+      roomUpdateStatement.setInt(2, reservation.getIdRoom());
+      roomUpdateStatement.executeUpdate();
+
+      String insertQuery = "INSERT INTO Reservation (check_in, check_out, dias_totais, numero_convidados_reserva, preco_total, esta_ativo, fk_Host_id, fk_Room_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+      PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+
+      preparedStatement.setDate(1, Date.valueOf(reservation.getCheckIn()));
+      preparedStatement.setDate(2, Date.valueOf(reservation.getCheckOut()));
+      preparedStatement.setInt(3, reservation.getDaysTotal());
+      preparedStatement.setInt(4, reservation.getGuestNumbersToReserve());
+      preparedStatement.setDouble(5, reservation.getTotalPrice());
+      preparedStatement.setBoolean(6, reservation.isActive());
+
+      var x = reservation.getIdHost();
+      var y = reservation.getIdRoom();
+      preparedStatement.setInt(7, x);
+      preparedStatement.setInt(8, y);
+      preparedStatement.executeUpdate();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 
   public boolean loginHost(String cpf, java.sql.Date dataNascimento) {
@@ -93,10 +121,19 @@ public class LodgeRepository {
         var checkOut = resultSet.getDate("check_out");
         var guestNumber = resultSet.getInt("numero_convidados_reserva");
 
-        Host host = new Host(null, null, null, null);
-        Room room = new Room(null, null,0, 0, null);
+        Room room = null;
 
-        Reservation reservation = new Reservation(host, idHost, room, idRoom, checkIn, checkOut, guestNumber);
+        ArrayList<Room> rooms = getAllRooms();
+        for (Room r: rooms) {
+          if(r.getId() == idRoom){
+            room = r;
+            break;
+          }
+        }
+
+        Host host = new Host(null, null, null, null);
+
+        Reservation reservation = new Reservation(null, idHost, room, room.getId(), checkIn.toLocalDate(), checkOut.toLocalDate(), guestNumber);
         reservation.setId(resultSet.getInt("id"));
 
         reservations.add(reservation);
@@ -119,15 +156,17 @@ public class LodgeRepository {
 
       ArrayList<Room> rooms = new ArrayList<>();
       while (resultSet.next()) {
+        int id = resultSet.getInt("id");
         String nome = resultSet.getString("nome");
         int capacidade = resultSet.getInt("capacidade");
-        int tipo = resultSet.getInt("tipo");
+        int tipoNumero = resultSet.getInt("tipo");
         float precoDiaria = resultSet.getFloat("preco_diaria");
         String descricao = resultSet.getString("descricao");
         boolean estaReservado = resultSet.getBoolean("esta_reservado");
 
-        Room room = new Room(nome, ERoomType.Familia,capacidade, precoDiaria, descricao);
-
+        ERoomType tipo = GetTypeOfRoom(tipoNumero);
+        Room room = new Room(nome, tipo, capacidade, precoDiaria, descricao, estaReservado);
+        room.setId(id);
 
         rooms.add(room);
       }
@@ -137,5 +176,47 @@ public class LodgeRepository {
       e.printStackTrace();
       return new ArrayList<>(); // Tratamento de erro
     }
+  }
+
+  private ERoomType GetTypeOfRoom(int number){
+    switch (number){
+      case 1:
+        return ERoomType.Suite;
+      case 2:
+        return ERoomType.Familia;
+      case 3:
+        return ERoomType.Individual;
+    }
+
+    return ERoomType.Familia;
+  }
+
+  public Host getHostByCpf(String cpf) {
+    try {
+      String sql = "SELECT * FROM Host h WHERE h.cpf = ?";
+
+      PreparedStatement preparedStatement = connection.prepareStatement(sql);
+      preparedStatement.setString(1, cpf);
+
+      ResultSet resultSet = preparedStatement.executeQuery();
+
+      while (resultSet.next()) {
+        int id = resultSet.getInt("id");
+        String nome = resultSet.getString("nome");
+        var dataAniversario = resultSet.getDate("data_aniversario");
+        String cpfStr = resultSet.getString("cpf");
+        String contato = resultSet.getString("contato");
+
+        Contact contact = new Contact(contato);
+
+        Host host = new Host(nome, cpfStr, dataAniversario.toLocalDate(), contact);
+        host.setId(id);
+        return host;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return null;
   }
 }

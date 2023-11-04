@@ -1,10 +1,21 @@
+import models.Room;
+import services.LodgeService;
+
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
 public class QuartosDisponiveis extends JFrame {
+    private String user;
     private JLabel title;
     private JPanel quartosPanel;
     private JButton reservasButton;
 
+    public QuartosDisponiveis(String user) {
+        initComponents();
+        this.user = user;
+    }
     public QuartosDisponiveis() {
         initComponents();
     }
@@ -23,11 +34,24 @@ public class QuartosDisponiveis extends JFrame {
         quartosPanel.setLayout(new BoxLayout(quartosPanel, BoxLayout.Y_AXIS));
 
         // Simulação de quartos - você pode adicionar mais quartos
-        criarQuartoPanel("Quarto 1", "Disponível", "R$59");
-        criarQuartoPanel("Quarto 2", "Disponível", "R$119");
-        criarQuartoPanel("Quarto 3", "Disponível", "R$200");
-        criarQuartoPanel("Quarto 4", "Ocupado", "R$150");
-        criarQuartoPanel("Quarto 5", "Disponível", "R$80");
+
+        LodgeService service = new LodgeService();
+        ArrayList<Room> rooms = service.getAllRooms();
+        for (Room r:rooms) {
+            String nomeQuarto = String.format(" %s", r.getName());
+            String disponibilidade = String.format("%s", r.getIsReservation() ? "V" : "F");
+
+            DecimalFormat df = new DecimalFormat("#.00");
+            String numeroFormatado = df.format(r.getDailyPrice());
+            String preco = String.format("R$%s", numeroFormatado);
+
+            criarQuartoPanel(nomeQuarto, disponibilidade, preco);
+        }
+//        criarQuartoPanel("Quarto 1", "Disponível", "R$59");
+//        criarQuartoPanel("Quarto 2", "Disponível", "R$119");
+//        criarQuartoPanel("Quarto 3", "Disponível", "R$200");
+//        criarQuartoPanel("Quarto 4", "Ocupado", "R$150");
+//        criarQuartoPanel("Quarto 5", "Disponível", "R$80");
 
         reservasButton = criarBotao("Reservas");
         reservasButton.addActionListener(e -> abrirTelaReservas());
@@ -66,9 +90,9 @@ public class QuartosDisponiveis extends JFrame {
 
         JLabel roomLabel = criarLabel("Quarto: " + roomName, 12, Color.BLACK);
         JLabel availabilityLabel = criarLabel("Disponibilidade: " + availability, 12, Color.BLACK);
-        JLabel priceLabel = criarLabel("Preço: " + price, 12, Color.BLACK);
+        JLabel priceLabel = criarLabel("Valor Diaria: " + price, 12, Color.BLACK);
 
-        JButton reservaButton = criarBotao("Reservar");
+        JButton reservaButton = criarBotao("RESERVAR");
         reservaButton.setPreferredSize(new Dimension(100, 30));
 
         quartoItem.add(roomLabel);
@@ -78,16 +102,17 @@ public class QuartosDisponiveis extends JFrame {
 
         quartosPanel.add(quartoItem);
 
-        reservaButton.addActionListener(e -> abrirTelaConfirmarReserva(roomName, Double.parseDouble(price.replace("R$", "").trim())));
+        reservaButton.addActionListener(e -> abrirTelaConfirmarReserva(roomName, Double
+                .parseDouble(price.replace("R$", "").replace(",", ".").trim())));
     }
 
     private void abrirTelaReservas() {
-        new MinhasReservas().setVisible(true);
+        new MinhasReservas(this.user).setVisible(true);
         dispose();
     }
 
     private void abrirTelaConfirmarReserva(String roomName, double price) {
-        ConfirmarReserva confirmarReserva = new ConfirmarReserva(roomName, price);
+        ConfirmarReserva confirmarReserva = new ConfirmarReserva(roomName, price, this.user);
         confirmarReserva.setVisible(true);
         dispose();
     }

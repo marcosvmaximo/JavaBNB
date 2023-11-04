@@ -1,8 +1,9 @@
 package models;
-import java.util.ArrayList;
 
 import enums.ERoomType;
 import models.common.Entity;
+
+import java.util.ArrayList;
 
 public class Room extends Entity{
   private String name;
@@ -14,15 +15,15 @@ public class Room extends Entity{
 
   private ArrayList<Reservation> reservations;
 
-  public Room(String name, ERoomType type, int guestNumberMax, double dailyPrice, String description) {
+  public Room(String name, ERoomType type, int guestNumberMax, double dailyPrice, String description, boolean isReservation) {
     this.name = name;
     this.type = type;
     this.guestNumberMax = guestNumberMax;
     this.description = description;
-    this.dailyPrice = dailyPrice * calculateValuesOfTypeRoom(type);
-    this.isReservation = false;
+    this.dailyPrice = calculateValuesOfTypeRoom(dailyPrice, type);
+    this.isReservation = isReservation;
 
-    this.reservations = new ArrayList<Reservation>(reservations);
+    this.reservations = new ArrayList<Reservation>();
   }
 
   public void addReserve(Reservation reserva){
@@ -52,20 +53,20 @@ public class Room extends Entity{
     return days * dailyPrice;
   }
 
-  private double calculateValuesOfTypeRoom(ERoomType type){
+  private double calculateValuesOfTypeRoom(double price, ERoomType type){
     switch (type) {
       case Suite:
-          return 0.3;
+          return price + (0.3 * price);
 
       case Familia:
-          return 0.4;
+          return price + (0.4 * price);
 
       case Individual:
-          return 0.15;
+          return price + (0.15 * price);
 
       default:
-          return 0.1;
-  }
+          return price + (0.1 * price);
+    }
   }
 
   public String getName() {

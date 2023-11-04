@@ -1,5 +1,12 @@
+import models.Host;
+import models.Reservation;
+import models.Room;
+import services.LodgeService;
+
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
+
 public class ConfirmarReserva extends JFrame {
     private JLabel titleLabel;
     private JLabel quantidadeDiariasLabel;
@@ -10,9 +17,11 @@ public class ConfirmarReserva extends JFrame {
     private JLabel precoTotalValueLabel;
     private JButton confirmarPagamentoButton;
     private JButton backButton;
+    private String user;
 
-    public ConfirmarReserva(String roomName, double diariaPrice) {
+    public ConfirmarReserva(String roomName, double diariaPrice, String user) {
         initComponents(roomName, diariaPrice);
+        this.user = user;
     }
 
     private void initComponents(String roomName, double diariaPrice) {
@@ -36,7 +45,7 @@ public class ConfirmarReserva extends JFrame {
 
         // Botão "Confirmar Pagamento"
         confirmarPagamentoButton = criarBotao("Confirmar Pagamento");
-        confirmarPagamentoButton.addActionListener(e -> abrirTelaPagamento());
+        confirmarPagamentoButton.addActionListener(e -> abrirTelaPagamento(roomName, diariaPrice, this.user));
 
         // Botão "Voltar"
         backButton = criarBotao("Voltar");
@@ -92,6 +101,35 @@ public class ConfirmarReserva extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    private void abrirTelaPagamento(String roomName, double diariaPrice, String user) {
+        int valueDays = 0;
+        try{
+            String valueString = quantidadeDiariasField.getText();
+            valueDays = Integer.parseInt(valueString);
+        } catch (Exception ex){
+            JOptionPane.showMessageDialog(this, "Valor inserido inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        LodgeService service = new LodgeService();
+        Room room = service.getRoomByName(roomName);
+        Host host = service.getHostByCpf(user);
+
+        if(room.getIsReservation()){
+            JOptionPane.showMessageDialog(this, "Quarto informado já está reservado", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+        LocalDate dataAtual = LocalDate.now();
+
+        Reservation reservation = new Reservation(host, host.getId(), room, room.getId(), dataAtual, dataAtual.plusDays(valueDays), valueDays);
+        boolean result = service.createReserve(reservation);
+
+        if(result){
+            new Pagamento().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao reservar esse quarto, tente novamente mais tarde.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        dispose();
+    }
+
     private void calcularPrecoTotal() {
         try {
             int quantidadeDiarias = Integer.parseInt(quantidadeDiariasField.getText());
@@ -103,19 +141,14 @@ public class ConfirmarReserva extends JFrame {
         }
     }
 
-    private void abrirTelaPagamento() {
-        new Pagamento().setVisible(true);
-        dispose();
-    }
-
     private void abrirTelaQuartos() {
-        new QuartosDisponiveis().setVisible(true);
+        new QuartosDisponiveis(this.user).setVisible(true);
         dispose();
     }
 
     public static void main(String args[]) {
         SwingUtilities.invokeLater(() -> {
-            new ConfirmarReserva("Nome do Quarto 1", 100.00).setVisible(true);
+            new ConfirmarReserva("Nome do Quarto 1", 100.00, null).setVisible(true);
         });
     }
 

@@ -3,18 +3,17 @@ package models.common;
 import models.Contact;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public abstract class User extends Entity {
     private String name;
-    private LocalDateTime birth;
+    private LocalDate birth;
     private String cpf;
     private Contact contact;
 
-    public User(String name, String cpf, LocalDateTime birth, Contact contact){
-        if(!User.isValidCPF(cpf)){
-            throw new IllegalArgumentException("Cpf inválido.");
-        }
+    public User(String name, String cpf, LocalDate birth, Contact contact){
+//        if(!User.isValidCPF(cpf)){
+//            throw new IllegalArgumentException("Cpf inválido.");
+//        }
 
         this.name = name;
         this.birth = birth;
@@ -37,7 +36,7 @@ public abstract class User extends Entity {
     }
 
     public LocalDate getBirthDate() {
-        return this.birth.toLocalDate();
+        return this.birth;
     }
     
     public static boolean isValidCPF(String cpf) {

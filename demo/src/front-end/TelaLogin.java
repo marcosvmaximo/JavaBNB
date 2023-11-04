@@ -104,7 +104,7 @@ public class TelaLogin extends JFrame {
 
         // Utiliza serviço
         LodgeService service = new LodgeService();
-        boolean result = service.LoginUser(cpf, birthDate);
+        boolean result = service.loginUser(cpf, birthDate);
 
         if (result) {
             JOptionPane.showMessageDialog(this, "Login bem-sucedido!");

@@ -130,7 +130,7 @@ public class TelaCadastro extends JFrame {
                 // Chame a função RegisterUser
                 LodgeService service = new LodgeService();
                 
-                Boolean cadastrado = service.RegisterUser(nomeCompleto, dataNascimentoStr, numeroTelefone, cpf);
+                Boolean cadastrado = service.registerUser(nomeCompleto, dataNascimentoStr, numeroTelefone, cpf);
     
                 if (cadastrado) {
                     JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);

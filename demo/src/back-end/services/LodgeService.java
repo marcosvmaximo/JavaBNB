@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class LodgeService implements ILodgeService {
 
   @Override
-  public ArrayList<Reservation> GetAllReserveByUser(String cpfUser) {
+  public ArrayList<Reservation> getAllReserveByUser(String cpfUser) {
     if(cpfUser == null || cpfUser.isBlank()){
       return null;
     }
@@ -24,29 +24,19 @@ public class LodgeService implements ILodgeService {
   }
 
   @Override
-  public ArrayList<Room> GetAllRooms() {
+  public ArrayList<Room> getAllRooms() {
     LodgeRepository repository = new LodgeRepository();
     return repository.getAllRooms();
   }
 
   @Override
-  public Boolean CreateReserve() {
-
-//    // Buscar Host
-//    Host host = new Host();
-//    // Buscar Room
-//    Room room = new Room();
-//
-//    Reservation reservation = new Reservation();
-//
-//    LodgeRepository repository = new LodgeRepository();
-//    var result = repository.createReservation(reservation);
-
-    return true;
+  public Boolean createReserve(Reservation reservation) {
+    LodgeRepository repository = new LodgeRepository();
+    return repository.createReservation(reservation);
   }
   
   @Override
-  public boolean RegisterUser(String nomeCompleto, String dataNascimento, String numeroTelefone, String cpf) {
+  public boolean registerUser(String nomeCompleto, String dataNascimento, String numeroTelefone, String cpf) {
     if(nomeCompleto == null || nomeCompleto.isBlank()){
       return false;
     }
@@ -68,7 +58,7 @@ public class LodgeService implements ILodgeService {
     LocalDateTime dateTime = LocalDateTime.of(ano, mes, dia, 0, 0);
 
     Contact contact = new Contact(numeroTelefone);
-    Host host = new Host(nomeCompleto, cpf, dateTime, contact);
+    Host host = new Host(nomeCompleto, cpf, dateTime.toLocalDate(), contact);
 
     LodgeRepository repository = new LodgeRepository();
     repository.createHost(host);
@@ -77,7 +67,7 @@ public class LodgeService implements ILodgeService {
   }
 
   @Override
-  public boolean LoginUser(String cpf, String dataNascimento) {
+  public boolean loginUser(String cpf, String dataNascimento) {
     if(cpf.isBlank() || cpf == null){
       return false;
     }
@@ -96,5 +86,30 @@ public class LodgeService implements ILodgeService {
 
     LodgeRepository repository = new LodgeRepository();
     return repository.loginHost(cpf, data);
+  }
+
+  public Room getRoomByName(String roomName) {
+    if(roomName == null || roomName.isBlank()){
+      return null;
+    }
+
+    LodgeRepository repository = new LodgeRepository();
+    ArrayList<Room> rooms = repository.getAllRooms();
+
+    for (Room r:rooms ) {
+      var r1 = r.getName().trim().toLowerCase();
+      var r2 = roomName.trim().toLowerCase();
+
+      if(r1.equals(r2)){
+        return r;
+      }
+    }
+
+    return null;
+  }
+
+  public Host getHostByCpf(String user) {
+    LodgeRepository repository = new LodgeRepository();
+    return repository.getHostByCpf(user);
   }
 }

@@ -2,14 +2,14 @@ package models;
 
 import models.common.User;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Host extends User {
     private ArrayList<Reservation> reservation;
     private int maxReservationNumber = 2;
     
-    public Host(String name, String cpf, LocalDateTime birth, Contact contact) {
+    public Host(String name, String cpf, LocalDate birth, Contact contact) {
         super(name, cpf, birth, contact);
         
         reservation = new ArrayList<Reservation>();

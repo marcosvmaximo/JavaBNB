@@ -1,12 +1,10 @@
 
 package models;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-
 import models.common.Entity;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Reservation extends Entity {
 
@@ -15,8 +13,8 @@ public class Reservation extends Entity {
   private Room room;
   private int idRoom;
 
-  private Date checkIn;
-  private Date checkOut;
+  private LocalDate checkIn;
+  private LocalDate checkOut;
   private int daysTotal;
   private int guestNumbersToReserve;
   private double totalPrice;
@@ -28,8 +26,8 @@ public class Reservation extends Entity {
       int idHost,
       Room room,
       int idRoom,
-      Date checkIn,
-      Date checkOut,
+      LocalDate checkIn,
+      LocalDate checkOut,
       int guestNumbersToReserve) {
 
     this.host = host;
@@ -55,11 +53,8 @@ public class Reservation extends Entity {
     this.isCompleted = true;
   }
 
-  private int calculateDayGap(Date checkInDate, Date checkOutDate) {
-    LocalDate checkInLocalDate = checkInDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    LocalDate checkOutLocalDate = checkOutDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-    long stayDuration = ChronoUnit.DAYS.between(checkInLocalDate, checkOutLocalDate);
+  private int calculateDayGap(LocalDate checkInDate, LocalDate checkOutDate) {
+    long stayDuration = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
 
     return (int) stayDuration;
   }
@@ -84,11 +79,11 @@ public class Reservation extends Entity {
     return idRoom;
   }
 
-  public Date getCheckIn() {
+  public LocalDate getCheckIn() {
     return checkIn;
   }
 
-  public Date getCheckOut() {
+  public LocalDate getCheckOut() {
     return checkOut;
   }
 
@@ -107,7 +102,7 @@ public class Reservation extends Entity {
   @Override
   public void Validate() {
 
-    if (checkIn == null || checkOut == null || checkIn.after(checkOut)) {
+    if (checkIn == null || checkOut == null || checkIn.isAfter(checkOut)) {
       throw new IllegalArgumentException("Datas de check-in e check-out inválidas.");
     }
 

@@ -40,13 +40,13 @@ public class MinhasReservas extends JFrame {
 
         // Obter as reservas atuais
         LodgeService service = new LodgeService();
-        ArrayList<Reservation> reservations = service.GetAllReserveByUser(this.user);
+        ArrayList<Reservation> reservations = service.getAllReserveByUser(this.user);
 
         for (Reservation r:reservations) {
-            String nomeQuarto = String.format("Nome do Quarto: %s", r.getRoom().getName());
-            String checkIn = String.format("Data de Entrada : %s", r.getCheckIn());
-            String checkOut = String.format("Data de Saída: %s", r.getCheckOut());
-            String guestNumber = String.format("Nome do Quarto: %s", r.getGuestNumbersToReserve());
+            String nomeQuarto = String.format("%s", r.getRoom().getName());
+            String checkIn = String.format("%s", r.getCheckIn());
+            String checkOut = String.format("%s", r.getCheckOut());
+            String guestNumber = String.format("%s", r.getGuestNumbersToReserve());
             criarReservaPanel(nomeQuarto, checkIn, checkOut, guestNumber);
         }
 //        criarReservaPanel("Nome do Quarto 1", "Data de Entrada 1", "Data de Saída 1", "Número de Hóspedes 1");
@@ -133,7 +133,7 @@ public class MinhasReservas extends JFrame {
     }
 
     private void abrirTelaQuartos() {
-        new QuartosDisponiveis().setVisible(true);
+        new QuartosDisponiveis(this.user).setVisible(true);
     }
 
     private void voltarParaTelaInicial() {
