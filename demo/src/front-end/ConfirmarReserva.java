@@ -25,7 +25,7 @@ public class ConfirmarReserva extends JFrame {
     }
 
     private void initComponents(String roomName, double diariaPrice) {
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         setTitle("Confirmar Reserva");
         setPreferredSize(new Dimension(400, 300));
 
@@ -123,7 +123,7 @@ public class ConfirmarReserva extends JFrame {
         boolean result = service.createReserve(reservation);
 
         if(result){
-            new Pagamento().setVisible(true);
+            new Pagamento(this.user).setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Ocorreu um erro ao reservar esse quarto, tente novamente mais tarde.", "Erro", JOptionPane.ERROR_MESSAGE);
         }

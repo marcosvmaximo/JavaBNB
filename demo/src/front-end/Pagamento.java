@@ -2,14 +2,19 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Pagamento extends JFrame {
+    private String user;
     private JLabel pagamentoLabel;
 
     public Pagamento() {
         initComponents();
     }
+    public Pagamento(String user) {
+        this.user = user;
+        initComponents();
+    }
 
     private void initComponents() {
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         setTitle("Pagamento");
         setPreferredSize(new Dimension(400, 300));
 
@@ -25,11 +30,13 @@ public class Pagamento extends JFrame {
 
         pack();
         setLocationRelativeTo(null);
+        new MinhasReservas(this.user).setVisible(true);
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new Pagamento().setVisible(true);
+
         });
     }
 
