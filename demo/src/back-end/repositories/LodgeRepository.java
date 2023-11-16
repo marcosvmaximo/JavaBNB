@@ -67,10 +67,8 @@ public class LodgeRepository {
       preparedStatement.setDouble(5, reservation.getTotalPrice());
       preparedStatement.setBoolean(6, reservation.isActive());
 
-      var x = reservation.getIdHost();
-      var y = reservation.getIdRoom();
-      preparedStatement.setInt(7, x);
-      preparedStatement.setInt(8, y);
+      preparedStatement.setInt(7, reservation.getIdHost());
+      preparedStatement.setInt(8, reservation.getIdRoom());
       preparedStatement.executeUpdate();
       return true;
     } catch (SQLException e) {
